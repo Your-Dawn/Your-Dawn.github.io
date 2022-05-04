@@ -3323,6 +3323,10 @@ a {
   }
 }
 
+        .description {
+          color: #3b5bdb;
+        }
+      
         .navbar-inverse{
           background-color: rgba(143,168,171,0.8);
         }
