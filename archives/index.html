@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://Your-Dawn.github.io/media/css/live2d.css">
     <link rel="stylesheet" href="https://Your-Dawn.github.io/styles/main.css">
     <link rel="stylesheet" href="https://Your-Dawn.github.io/media/css/font-awesome.css">
-    <meta name="description" content="Dawn's Home" />
+    <meta name="description" content="Never Forget You Are Loved" />
     <title>Dawn_home</title>
 </head>
 
@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://Your-Dawn.github.io/media/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://Your-Dawn.github.io/styles/main.css">
     
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/default.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/vs2015.min.css">
     
     <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/clipboard.min.js"></script>
@@ -36,6 +36,30 @@
 
 
     <!--------- 数学公式👇---- -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.css"
+        integrity="sha384-9tPv11A+glH/on/wEu99NVwDPwkMQESOocs/ZGXPoIiLE8MU/qkqUcZ3zzL+6DuH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.js"
+        integrity="sha384-U8Vrjwb8fuHMt6ewaCy8uqeUXv4oitYACKdB0VziCerzt011iQ/0TqlSlv8MReCm" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/contrib/auto-render.min.js"
+        integrity="sha384-aGfk5kvhIq5x1x5YdvCp4upKZYnA8ckafviDpmWEKp4afOZEqOli7gqSnh8I6enH" crossorigin="anonymous">
+    </script>
+    <script>
+        renderMathInElement(document.body, {
+            delimiters: [{
+                    left: "$$",
+                    right: "$$",
+                    display: true
+                },
+                {
+                    left: "$",
+                    right: "$",
+                    display: false
+                }
+            ]
+        });
+    </script>
     
     <!--------- 数学公式👆----------------- -->
     <!--------- daovocie功能👇 ------------------->
@@ -88,17 +112,17 @@
                         src='https://Your-Dawn.github.io/media/images/music.png' alt="音乐播放器" class="musicbtn"></i></a>
         </div>
         <div class="avatar-border">
-            <img src="https://Your-Dawn.github.io/images/avatar.png?v=1651687527964" class="avatar">
+            <img src="https://Your-Dawn.github.io/images/avatar.png?v=1651770671375" class="avatar">
         </div>
         <div class="sitename">Dawn_home</div>
-        <span class="description" data-text='["Dawn's Home"]'>&nbsp;</span>
+        <span class="description" data-text='["Never Forget You Are Loved"]'>&nbsp;</span>
         <div class="siteinfocontainer">
             <span class="siteinfo">文章</span>
             <span class="siteinfo">标签</span>
         </div>
         <div class="siteinfocontainer">
             <span class="siteinfo" id="siteinfo-postsnum"></span>
-            <span class="siteinfo">1</span>
+            <span class="siteinfo">3</span>
         </div>
         
         <div class="search">
@@ -199,8 +223,22 @@
                 href="https://github.com/850552586/gridea-theme-fog">Fog</a>
             <div>
                 
+                <div id="sitegotimeDate">载入天数...</div>
+                <div id="sitegotimes">载入时分秒...</div>
+                <div id="cussitetime" style="display:none">02/22/2020</div>
+                
             </div>
             <div>
+                
+                <script async
+                    src="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/busuanzi.pure.mini.js"></script>
+                <div id="vistornum" style="margin:0">
+                    <span id="busuanzi_container_site_uv">
+                        <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i> 总访问量:<span
+                            id="busuanzi_value_site_pv"></span>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <i class="fa fa-user-o" aria-hidden="true"></i> 访问人数:<span id="busuanzi_value_site_uv"></span>
+                    </span>
+                </div>
                 
             </div>
             <div class="copyright" style="color:white;text-align: center;">Copyright © 2020  备案号: 鄂ICP备...号
@@ -211,6 +249,38 @@
 
     </div>
 </body>
+
+<script>
+    //----------------------站点运行时间
+    var now = new Date();
+
+    function createtime() {
+        var sitegotime = document.getElementById("cussitetime").innerHTML + " 00:00:00";
+        var grt = new Date(sitegotime); //此处修改你的建站时间或者网站上线时间 
+        now.setTime(now.getTime() + 250);
+        days = (now - grt) / 1000 / 60 / 60 / 24;
+        dnum = Math.floor(days);
+        hours = (now - grt) / 1000 / 60 / 60 - (24 * dnum);
+        hnum = Math.floor(hours);
+        if (String(hnum).length == 1) {
+            hnum = "0" + hnum;
+        }
+        minutes = (now - grt) / 1000 / 60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes);
+        if (String(mnum).length == 1) {
+            mnum = "0" + mnum;
+        }
+        seconds = (now - grt) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds);
+        if (String(snum).length == 1) {
+            snum = "0" + snum;
+        }
+        document.getElementById("sitegotimeDate").innerHTML = "本站已安全运行 " + dnum + " 天 ";
+        document.getElementById("sitegotimes").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+
+    let intervalId = setInterval("createtime()", 250);
+</script>
 
     </div>
 
@@ -274,7 +344,7 @@
     
     
     <script>
-        var shareChoice = false
+        var shareChoice = true
     </script>
     
     
@@ -291,9 +361,23 @@
     <div id="side-posttitle" style="display: none;">
     
     
+    快速傅里叶变换(FFT)
+    <script>
+        postsnum += 1
+    </script>
     
     
-    Hello Gridea
+    
+    快速数论变换(NTT)
+    <script>
+        postsnum += 1
+    </script>
+    
+    
+    
+    
+    
+    新博客来了！😘
     <script>
         postsnum += 1
     </script>
@@ -942,7 +1026,7 @@ menulist.eq(i).show();
     if(bgchoice=='default')
         var plbgurl = "/media/images/custom-mobilebg.jpg"
     else  
-        var plbgurl = ""
+        var plbgurl = "https://cdn.luogu.com.cn/upload/image_hosting/vhm44q3u.png"
     $(".plbg").attr("src",plbgurl);
     $(".plbg").fadeIn(200);
 </script>
@@ -952,14 +1036,49 @@ menulist.eq(i).show();
     <div class="archives-content">
         
         
-        <div class="archives-year">2018</div>
+        <div class="archives-year">2022</div>
         <ul>
             
             
             <li><span></span>
                 <div>
+                  <a data-pjax href="https://Your-Dawn.github.io/post/kuai-su-fu-li-xie-bian-huan-fft/" class="post">
+                    <div class="archives-title">快速傅里叶变换(FFT)</div>
+                    <div class="archives-time">2022-05-06</div>
+                </a>
+                    
+                </div>
+            </li>
+            
+            
+            
+            <li><span></span>
+                <div>
+                  <a data-pjax href="https://Your-Dawn.github.io/post/kuai-su-shu-lun-bian-huan-ntt/" class="post">
+                    <div class="archives-title">快速数论变换(NTT)</div>
+                    <div class="archives-time">2022-05-06</div>
+                </a>
+                    
+                </div>
+            </li>
+            
+            
+            
+            
+        </ul>
+        
+        <div class="archives-year">2018</div>
+        <ul>
+            
+            
+            
+            
+            
+            
+            <li><span></span>
+                <div>
                   <a data-pjax href="https://Your-Dawn.github.io/post/hello-gridea/" class="post">
-                    <div class="archives-title">Hello Gridea</div>
+                    <div class="archives-title">新博客来了！😘</div>
                     <div class="archives-time">2018-12-12</div>
                 </a>
                     
@@ -1033,6 +1152,69 @@ menulist.eq(i).show();
                 <div class="col-xs-6 col-sm-3"></div>
             </div>
             
+                <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+</head>
+
+<body>
+    <div class="miniMode">
+        <meting-js id="myaplayer" server="netease" type="playlist" fixed="true" order="default" muted="muted">
+        </meting-js>
+    </div>
+</body>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+<script>
+    function aplayerInit() {
+        var aplayerid = "3736306308";
+        var aplayerserver = "tencent";
+        var aplayerorder = "random";
+        var aplayerautoplay = "true";
+        var aplayer = $("#myaplayer");
+        aplayer.attr("server", aplayerserver);
+        aplayer.attr("id", aplayerid);
+        aplayer.attr("order", aplayerorder);
+        if (aplayerautoplay == "true")
+            aplayer.attr("autoplay", "true");
+    }
+    aplayerInit();
+</script>
+
+<script src="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/Aplayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+<script>
+    function aplayerbtnInit() {
+        var player = document.querySelectorAll('meting-js')[0].aplayer;
+        if(player==undefined)return false;
+        player.lrc.hide();
+        var mbabtn = $("#mbaplayer");
+        if (player.paused == false) {
+            mbabtn.removeClass("fa-play-circle-o");
+            mbabtn.addClass("fa-pause-circle");
+        } else {
+            mbabtn.addClass("fa-play-circle-o");
+            mbabtn.removeClass("fa-pause-circle");
+        }
+    }
+
+    function aplayerPlay() {
+        var player = document.querySelectorAll('meting-js')[0].aplayer;
+        var mbabtn = $("#mbaplayer");
+        if (player.paused == true) {
+            player.play();
+            mbabtn.removeClass("fa-play-circle-o");
+            mbabtn.addClass("fa-pause-circle");
+        } else {
+            player.pause();
+            mbabtn.addClass("fa-play-circle-o");
+            mbabtn.removeClass("fa-pause-circle");
+        }
+    }
+</script>
+                
         </div>
         <div id="bg">
         </div>
