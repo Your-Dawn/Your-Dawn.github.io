@@ -307,7 +307,7 @@
                         src='https://Your-Dawn.github.io/media/images/music.png' alt="音乐播放器" class="musicbtn"></i></a>
         </div>
         <div class="avatar-border">
-            <img src="https://Your-Dawn.github.io/images/avatar.png?v=1651855254645" class="avatar">
+            <img src="https://Your-Dawn.github.io/images/avatar.png?v=1657463269585" class="avatar">
         </div>
         <div class="sitename">Dawn_home</div>
         <span class="description" data-text='["Never Forget You Are Loved"]'>&nbsp;</span>
@@ -317,7 +317,7 @@
         </div>
         <div class="siteinfocontainer">
             <span class="siteinfo" id="siteinfo-postsnum"></span>
-            <span class="siteinfo">3</span>
+            <span class="siteinfo">4</span>
         </div>
         
         <div class="search">
@@ -554,6 +554,13 @@
     
     <script>let postsnum = 0;</script>
     <div id="side-posttitle" style="display: none;">
+    
+    
+    7.10暑期模拟赛
+    <script>
+        postsnum += 1
+    </script>
+    
     
     
     
@@ -1132,10 +1139,10 @@ menulist.eq(i).show();
 </blockquote>
 <h2 id="1-前言">1. 前言</h2>
 <p>上篇文章，我们介绍了求解多项式乘法的一种算法 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>FFT</mtext></mrow><annotation encoding="application/x-tex">\text{FFT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">FFT</span></span></span></span></span>，不清楚的读者请阅读<a href="https://zybuluo.com/dxbdly/note/1808137">文章</a></p>
-<p>但 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>FFT</mtext></mrow><annotation encoding="application/x-tex">\text{FFT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">FFT</span></span></span></span></span> 需要用到复数类，常数较大且容易出现精度误差。</p>
-<p>而 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>NTT</mtext></mrow><annotation encoding="application/x-tex">\text{NTT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">NTT</span></span></span></span></span> 可以很好的解决这两个问题，它是一种基于 <strong>原根</strong> 进行 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>DFT</mtext></mrow><annotation encoding="application/x-tex">\text{DFT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">DFT</span></span></span></span></span> 的算法。</p>
+<p>但<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>FFT</mtext></mrow><annotation encoding="application/x-tex">\text{FFT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">FFT</span></span></span></span></span>需要用到复数类，常数较大且容易出现精度误差。</p>
+<p>而<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>NTT</mtext></mrow><annotation encoding="application/x-tex">\text{NTT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">NTT</span></span></span></span></span>可以很好的解决这两个问题，它是一种基于 <strong>原根</strong> 进行<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>DFT</mtext></mrow><annotation encoding="application/x-tex">\text{DFT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">DFT</span></span></span></span></span>的算法。</p>
 <h2 id="2-原根">2. 原根</h2>
-<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>NTT</mtext></mrow><annotation encoding="application/x-tex">\text{NTT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">NTT</span></span></span></span></span> 仍采取点值表示，研究数值表示转点值表示，点值表示转数值表示两个问题。</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>NTT</mtext></mrow><annotation encoding="application/x-tex">\text{NTT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">NTT</span></span></span></span></span>仍采取点值表示，研究数值表示转点值表示，点值表示转数值表示两个问题。</p>
 <p>解决这两个问题的方法，与 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>FFT</mtext></mrow><annotation encoding="application/x-tex">\text{FFT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">FFT</span></span></span></span></span> 完全一样，只不过 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>NTT</mtext></mrow><annotation encoding="application/x-tex">\text{NTT}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord text"><span class="mord">NTT</span></span></span></span></span> 改变了点值表示中取的点。</p>
 <p>它采取 <strong>原根</strong> 代替单位复根，以此避免复数计算</p>
 <h3 id="1o-阶"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msup><mn>1</mn><mi>o</mi></msup></mrow><annotation encoding="application/x-tex">1^o</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.664392em;vertical-align:0em;"></span><span class="mord"><span class="mord">1</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">o</span></span></span></span></span></span></span></span></span></span></span> 阶</h3>
