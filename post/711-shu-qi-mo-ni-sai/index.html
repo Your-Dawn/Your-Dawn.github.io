@@ -2,22 +2,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <meta name="description" content="预估分数：
+
+
+
+T1
+T2
+T3
+Sum
+
+
+
+
+100
+100
+100
+300
+
+
+
+实际分数：
+
+
+
+T1
+T2
+T3
+Sum
+
+
+
+
+100
+100
+100
+300
+
+
+
+（吐槽T3数据，要不是有人发现了数据BUG就痛失AK）
+T1..." />
+    <meta name="keywords" content="2022暑期集训" />
     <link rel="stylesheet" href="https://your-dawn.github.io/media/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://your-dawn.github.io/media/css/live2d.css">
     <link rel="stylesheet" href="https://your-dawn.github.io/styles/main.css">
-    <link rel="stylesheet" href="https://your-dawn.github.io/media/css/font-awesome.css">
-    <meta name="description" content="Never Forget You Are Loved" />
-    <title>Dawn_home</title>
+    <!-- 代码渲染风格css -->
+    
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/vs2015.min.css">
+    
+    <!-- 代码高亮插件 -->
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+    <!-- 代码复制插件 -->
+    <script src="https://cdn.jsdelivr.net/gh/850552586/ericamcdn@0.1/js/clipboard.min.js"></script>
+    <!-- live2d插件 -->
+    <link rel="stylesheet" href="https://your-dawn.github.io/media/css/live2d.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
+    <!-- 数学公式 -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.css"
+        integrity="sha384-9tPv11A+glH/on/wEu99NVwDPwkMQESOocs/ZGXPoIiLE8MU/qkqUcZ3zzL+6DuH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/katex.min.js"
+        integrity="sha384-U8Vrjwb8fuHMt6ewaCy8uqeUXv4oitYACKdB0VziCerzt011iQ/0TqlSlv8MReCm" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/contrib/auto-render.min.js"
+        integrity="sha384-aGfk5kvhIq5x1x5YdvCp4upKZYnA8ckafviDpmWEKp4afOZEqOli7gqSnh8I6enH" crossorigin="anonymous">
+        </script>
+    <script>
+        renderMathInElement(document.body, {
+            delimiters: [{
+                left: "$$",
+                right: "$$",
+                display: true
+            },
+            {
+                left: "$",
+                right: "$",
+                display: false
+            }
+            ]
+        });
+    </script>
+    
+    <title>7.11暑期模拟赛</title>
+
+    <!-- 大纲索引css调整 -->
+    
+    <style>
+        .markdownIt-TOC {
+            margin-left: 28%;
+            padding-left: 2px;
+            width: 80%;
+        }
+
+        .markdownIt-TOC li {
+            padding-left: 8%;
+        }
+    </style>
+    
 </head>
 
-
 <body>
+    <div id="landlord">
+        <div class="message" style="opacity:0"></div>
+        <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
+    </div>
+    <div id="domainname" style="display:none">https://your-dawn.github.io</div>
     <div id="content">
-        <div class="nav-large">
-            <div class="row">
-                <div class="side"><head>
+        <div>
+            <!----------- 移动端导航栏👇 ----------------->
+            <div id="bar">
+                <style>
+  .navmobile {
+    z-index: 15;
+    max-height: 40vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  @media screen and (max-width: 1200px) {
+    .navbar {
+      max-width: 100vw;
+    }
+  }
+
+  @media screen and (max-width:1200px) and (min-width: 768px) {
+    @media (min-width: 768px) {
+      .navbar-nav {
+        float: right;
+        margin: 0;
+      }
+    }
+  }
+
+  @media screen and (max-width:768px) {
+    .mbapspan {
+      padding: 0;
+    }
+  }
+</style>
+<div class="pjaxloading"  onclick="pjaxloadingClose()">
+  <div class="loadingbackground"></div>
+  <div id="loading">
+    <div class="loading">
+    </div>
+  </div>
+</div>
+<nav class="navbar navbar-inverse navbar-fixed-top navmobile">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#barmenu"
+        aria-expanded="false" id="barbutton">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a data-pjax class="navbar-brand" style="color:white" href="https://your-dawn.github.io">Dawn_home&nbsp;&nbsp;|</a>
+      <span class="navbar-brand mbapspan"><i id="mbaplayer" class="fa fa-play-circle-o" aria-hidden="true"
+          style="font-size: 28px;top: 12px;position: absolute;" onclick="aplayerPlay();"></i></span>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="barmenu">
+      <ul class="nav navbar-nav">
+        
+        
+        <li>
+          <a data-pjax href="/" style="color:white">
+            首页
+          </a>
+        </li>
+        
+        
+        
+        <li>
+          <a data-pjax href="/archives" style="color:white">
+            归档
+          </a>
+        </li>
+        
+        
+        
+        <li>
+          <a data-pjax href="/tags" style="color:white">
+            标签
+          </a>
+        </li>
+        
+        
+        
+        <li>
+          <a data-pjax href="/post/about" style="color:white">
+            关于
+          </a>
+        </li>
+        
+        
+        
+        
+          
+        <li><a data-pjax href="https://your-dawn.github.io/friends" style="color:white">友链</a></li>
+
+        
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+
+  <!-- 引入jQuery核心js文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+  <script>
+    let btstate = false;
+    var bt = $("#barbutton");
+    var bm = $("#barmenu");
+    bt.click(function () {
+      dropdown();
+    })
+    function dropdown() {
+      console.log(btstate);
+      //下拉
+      if (btstate == false) {
+        bt.removeClass("collapsed");
+        bt.attr("aria-expanded", "true");
+        bm.attr("aria-expanded", "true")
+        bm.fadeIn(700);
+        btstate = true;
+      }
+      else {
+        bt.addClass("collapsed");
+        bt.attr("aria-expanded", "false");
+        bm.removeClass("in");
+        bm.hide();
+        bm.attr("aria-expanded", "false");
+        btstate = false;
+      }
+    }
+  </script> 
+            </div>
+            <!----------- 移动端导航栏👆 ----------------->
+
+            <!--------------- pc端菜单栏👇 ---------------->
+            <div class="side"><head>
     <link rel="stylesheet" href="https://your-dawn.github.io/media/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://your-dawn.github.io/styles/main.css">
     
@@ -893,8 +1121,11 @@ menulist.eq(i).show();
     }
 </script>
 <!----夜间模式👆--></div>
-                <!-- ----------------左侧菜单栏html 👇-------------------------------------->
-                
+            <!--------------- pc端菜单栏👆 ---------------->
+
+            <!-- ----------------左侧菜单栏html 👇-------------------------------------->
+            
+            <div>
                 <div id="tab1" class="tab">
                     <div class="bars">
                         <span></span>
@@ -904,299 +1135,354 @@ menulist.eq(i).show();
                     <div class="close"></div>
                 </div>
                 <div class="col-md-1 col-lg-3"></div>
-                <div class="mobilebar"><style>
-  .navmobile {
-    z-index: 15;
-    max-height: 40vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-  }
+                <!-- main标签，pjax渲染时加载以下内容👇 -->
+                <div id="main" class="col-xs-12 col-sm-12 col-md-12 col-lg-7" style="padding:0;">
+                    <div class="readingmode" onclick="readingmode()">阅</div>
+                    <link rel="stylesheet" href="https://your-dawn.github.io/media/css/font-awesome.css">
 
-  @media screen and (max-width: 1200px) {
-    .navbar {
-      max-width: 100vw;
-    }
-  }
-
-  @media screen and (max-width:1200px) and (min-width: 768px) {
-    @media (min-width: 768px) {
-      .navbar-nav {
-        float: right;
-        margin: 0;
-      }
-    }
-  }
-
-  @media screen and (max-width:768px) {
-    .mbapspan {
-      padding: 0;
-    }
-  }
-</style>
-<div class="pjaxloading"  onclick="pjaxloadingClose()">
-  <div class="loadingbackground"></div>
-  <div id="loading">
-    <div class="loading">
-    </div>
-  </div>
-</div>
-<nav class="navbar navbar-inverse navbar-fixed-top navmobile">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#barmenu"
-        aria-expanded="false" id="barbutton">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a data-pjax class="navbar-brand" style="color:white" href="https://your-dawn.github.io">Dawn_home&nbsp;&nbsp;|</a>
-      <span class="navbar-brand mbapspan"><i id="mbaplayer" class="fa fa-play-circle-o" aria-hidden="true"
-          style="font-size: 28px;top: 12px;position: absolute;" onclick="aplayerPlay();"></i></span>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="barmenu">
-      <ul class="nav navbar-nav">
-        
-        
-        <li>
-          <a data-pjax href="/" style="color:white">
-            首页
-          </a>
-        </li>
-        
-        
-        
-        <li>
-          <a data-pjax href="/archives" style="color:white">
-            归档
-          </a>
-        </li>
-        
-        
-        
-        <li>
-          <a data-pjax href="/tags" style="color:white">
-            标签
-          </a>
-        </li>
-        
-        
-        
-        <li>
-          <a data-pjax href="/post/about" style="color:white">
-            关于
-          </a>
-        </li>
-        
-        
-        
-        
-          
-        <li><a data-pjax href="https://your-dawn.github.io/friends" style="color:white">友链</a></li>
-
-        
-        </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-
-
-  <!-- 引入jQuery核心js文件 -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
-  <script>
-    let btstate = false;
-    var bt = $("#barbutton");
-    var bm = $("#barmenu");
-    bt.click(function () {
-      dropdown();
-    })
-    function dropdown() {
-      console.log(btstate);
-      //下拉
-      if (btstate == false) {
-        bt.removeClass("collapsed");
-        bt.attr("aria-expanded", "true");
-        bm.attr("aria-expanded", "true")
-        bm.fadeIn(700);
-        btstate = true;
-      }
-      else {
-        bt.addClass("collapsed");
-        bt.attr("aria-expanded", "false");
-        bm.removeClass("in");
-        bm.hide();
-        bm.attr("aria-expanded", "false");
-        btstate = false;
-      }
-    }
-  </script> 
-                </div>
-                <div id="main" class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-                    <div class="mobilebar">
-                        <img src="" alt="" class="plbg">
-<script>
-    var bgchoice = "link";
-    if(bgchoice=='default')
-        var plbgurl = "/media/images/custom-mobilebg.jpg"
-    else  
-        var plbgurl = "https://cdn.luogu.com.cn/upload/image_hosting/vhm44q3u.png"
-    $(".plbg").attr("src",plbgurl);
-    $(".plbg").fadeIn(200);
-</script>
-                    </div>
-                    <body>
-    <div class="archives-bg"></div>
-    <div class="archives-content">
-        
-        
-        <div class="archives-year">2022</div>
-        <ul>
+<body>
+    <div class="allcontent" id="postdetail">
+        <div class="postshow postpadding" style="padding-bottom: 0;">
             
-            
-            <li><span></span>
-                <div>
-                  <a data-pjax href="https://your-dawn.github.io/post/711-shu-qi-mo-ni-sai/" class="post">
-                    <div class="archives-title">7.11暑期模拟赛</div>
-                    <div class="archives-time">2022-07-12</div>
-                </a>
+            <div class="postdetailimg">
+                <img src="https://api.yimian.xyz/img?type=moe&amp;size=1920x1080" class="postimage" style="cursor:auto">
+            </div>
+            <div class="postinfo-detail">
+                <div class="postdate"><i class="fa fa-calendar"></i>2022-07-12</div>
+                <div class="poststatus postdate"><i class="fa fa-clock-o"></i> 7 min read</div>
+                <div class="posttag">
+                    
+                    <a data-pjax href="https://your-dawn.github.io/tag/x3ofi-LNh/" class="postlink">
+                        <i class="fa fa-tag"></i> 2022暑期集训
+                    </a>
                     
                 </div>
-            </li>
-            
-            
-            
-            <li><span></span>
-                <div>
-                  <a data-pjax href="https://your-dawn.github.io/post/710-shu-qi-mo-ni-sai/" class="post">
-                    <div class="archives-title">7.10暑期模拟赛</div>
-                    <div class="archives-time">2022-07-10</div>
-                </a>
-                    
-                </div>
-            </li>
-            
-            
-            
-            <li><span></span>
-                <div>
-                  <a data-pjax href="https://your-dawn.github.io/post/kuai-su-fu-li-xie-bian-huan-fft/" class="post">
-                    <div class="archives-title">快速傅里叶变换(FFT)</div>
-                    <div class="archives-time">2022-05-06</div>
-                </a>
-                    
-                </div>
-            </li>
-            
-            
-            
-            <li><span></span>
-                <div>
-                  <a data-pjax href="https://your-dawn.github.io/post/kuai-su-shu-lun-bian-huan-ntt/" class="post">
-                    <div class="archives-title">快速数论变换(NTT)</div>
-                    <div class="archives-time">2022-05-06</div>
-                </a>
-                    
-                </div>
-            </li>
-            
-            
-            
-            
-        </ul>
-        
-        <div class="archives-year">2018</div>
-        <ul>
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            <li><span></span>
-                <div>
-                  <a data-pjax href="https://your-dawn.github.io/post/hello-gridea/" class="post">
-                    <div class="archives-title">新博客来了！😘</div>
-                    <div class="archives-time">2018-12-12</div>
-                </a>
-                    
-                </div>
-            </li>
-            
-            
-        </ul>
-        
-    </div>
-</body>
-                    <div>
-                        <div class="pcpagi">
-    <div class="pagi">
-        <ul>
-            
-            <li><a style="width:100px">&nbsp;</a></li>
-            
-                    <li><a id="page1">1</a></li>
-                    <li><a id="page2" class="active">2</a></li>
-                    <li><a id="page3">3</a></li>
-                    
-            <li><a style="width:100px">&nbsp;</a></li>
-            
-                </ul>
-    </div>
-</div>
-
-<div id="pagination-prev" style="display:none"> 
-</div>
-<div id="pagination-next" style="display:none"> </div>
-
-<div class="pagination-container">
-      
-    
-</div>
-
-<script>
-    var prevstr = document.getElementById("pagination-prev").innerHTML;
-    var nextstr = document.getElementById("pagination-next").innerHTML;
-    var page1 = document.getElementById("page1");
-    var page2 = document.getElementById("page2");
-    var page3 = document.getElementById("page3");
-    page1.innerHTML = '-';
-    page2.innerHTML = '1';
-    page3.innerHTML = '-';
-    if (prevstr.length > 5) {
-        if (prevstr.indexOf("page/") != -1) {
-            var prevnum = parseInt(prevstr.split("page/")[1]);
-            page1.innerHTML = prevnum;
-            page2.innerHTML = prevnum + 1;
-        } else {
-            page1.innerHTML = 1;
-            page2.innerHTML = 2;
-        }
-    }
-    if (nextstr.indexOf("page/") != -1) {
-        var nextnum = parseInt(nextstr.split("page/")[1]);
-        page3.innerHTML = nextnum;
-        page2.innerHTML = nextnum - 1;
-    }
-</script>
-                        <div style="padding-bottom:10%"></div>
-                    </div>
-                </div>
-                <div class="col-md-1 col-lg-2"></div>
-                <!-- ----------------左侧菜单栏html 👆-------------------------------------->
-                <!------------------ 顶部菜单栏html👇--------->
-                
-                <!------------------ 顶部菜单栏html👆--------->
-                <div class="col-xs-6 col-sm-3"></div>
             </div>
             
-                <head>
+        <div id="articlecontent">
+            <div id="texttitle" style="text-align: center">
+                <h2 id="ptitle">7.11暑期模拟赛</h2>
+                <!-- id 将作为查询条件 -->
+                <div id="pl" style="display:none">https://your-dawn.github.io/post/711-shu-qi-mo-ni-sai/</div>
+                <div id="rootaddr" style="display:none">https://your-dawn.github.io</div>
+                
+            </div>
+            <div class="text ">
+                <p>预估分数：</p>
+<table>
+<thead>
+<tr>
+<th>T1</th>
+<th>T2</th>
+<th>T3</th>
+<th>Sum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>100</td>
+<td>100</td>
+<td>300</td>
+</tr>
+</tbody>
+</table>
+<p>实际分数：</p>
+<table>
+<thead>
+<tr>
+<th>T1</th>
+<th>T2</th>
+<th>T3</th>
+<th>Sum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>100</td>
+<td>100</td>
+<td>300</td>
+</tr>
+</tbody>
+</table>
+<p>（吐槽T3数据，要不是有人发现了数据BUG就痛失AK）</p>
+<h2 id="t1-chain">T1 Chain</h2>
+<p>第一问统计叶子树，第二问直接依题意树形DP上来，签到题。</p>
+<blockquote>
+<p>Tips：题面提示说注意可能有必要写手写栈，然后我就用的Tuopu，结果递归的也都过了，我因为用了STL比有些小常数递归的还慢（</p>
+</blockquote>
+<pre><code class="language-cpp">//The Code Is From Dawn
+#include&lt;bits/stdc++.h&gt;
+#define int long long
+using namespace std;
+inline int read() {
+	int x = 0;
+	char c = getchar();
+	bool f = 0;
+	while(!isdigit(c)) f |= (c == '-'), c = getchar();
+	while(isdigit(c)) x = (x * 10) + (c ^ 48), c = getchar();
+	return f ? -x : x;
+}
+const int maxn = 2 * 1e6 + 5, mod = 32416190071;
+int n;
+struct node {
+	int v, nex;
+	int w;
+}edge[maxn];
+int head[maxn], len, In[maxn], Out[maxn], f[maxn], root, Ans1;
+inline void make_map(int u, int v, int w) {
+	len++;
+	edge[len].nex = head[u];
+	edge[len].v = v;
+	edge[len].w = w;
+	head[u] = len;
+}
+inline void Tuopu() {
+	queue &lt;int&gt; Q;
+	for(register int i = 1; i &lt;= n; ++i) {
+		if(!In[i]) Ans1++, Q.push(i);
+		if(!Out[i]) root = i;
+	}
+	while(!Q.empty()) {
+		int x = Q.front(); Q.pop();
+		for(register int i = head[x]; i; i = edge[i].nex) {
+			int y = edge[i].v, z = edge[i].w;
+			f[y] = (f[y] + f[x] * z % mod) % mod, In[y]--;
+			if(!In[y]) Q.push(y);
+		}
+	}
+}
+signed main() {
+//	freopen(&quot;Chain.in&quot;, &quot;r&quot;, stdin);
+//	freopen(&quot;Chain.out&quot;, &quot;w&quot;, stdout);
+	n = read();
+	for(register int i = 1; i &lt; n; ++i) {
+		int u = read(), v = read(), w = read();
+		make_map(v, u, w), In[u]++, Out[v]++;
+	}
+	for(register int i = 1; i &lt;= n; ++i) f[i] = read() % mod;
+	Tuopu();
+	printf(&quot;%lld\n%lld\n&quot;, Ans1, f[root]);
+	return 0;
+}
+</code></pre>
+<h2 id="t2-prefix">T2 Prefix</h2>
+<p>算法：KMP+DP</p>
+<p>计数题，考虑DP，子串，考虑定义状态 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">f[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span> 为 以 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span> 结尾的合法子串数量。</p>
+<p>朴素方程：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>i</mi><mo>]</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>2</mn><mo separator="true">,</mo><mn>2</mn><mo>∣</mo><mi>j</mi></mrow><mi>i</mi></munderover><mo>[</mo><mi>s</mi><mo>[</mo><mn>1</mn><mo>…</mo><mi>j</mi><mo>]</mo><mo>=</mo><mi>s</mi><mo>[</mo><mi>i</mi><mo>−</mo><mi>j</mi><mo>+</mo><mn>1</mn><mo>…</mo><mi>i</mi><mo>]</mo><mo>]</mo></mrow><annotation encoding="application/x-tex">f[i] = \sum_{j = 2 , 2 \mid j}^{i} [s[1\ldots j] = s[i - j + 1 \ldots i]]
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.3276740000000005em;vertical-align:-1.5160049999999998em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8116690000000006em;"><span style="top:-1.8089950000000001em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">2</span><span class="mrel mtight">∣</span><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.5160049999999998em;"><span></span></span></span></span></span><span class="mopen">[</span><span class="mord mathdefault">s</span><span class="mopen">[</span><span class="mord">1</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">s</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mclose">]</span></span></span></span></span></p>
+<p>可以发现这个check是个前缀等于后缀的形式，考虑利用 KMP 里的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">next</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{next}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">n</span><span class="mord mathrm">e</span><span class="mord mathrm">x</span><span class="mord mathrm">t</span></span></span></span></span> 数组</p>
+<p>那么就是：</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>i</mi><mo>]</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>f</mi><mo>[</mo><mi mathvariant="normal">next</mi><mo>⁡</mo><mo>[</mo><mi>i</mi><mo>]</mo><mo>]</mo><mo>+</mo><mn>1</mn></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>2</mn><mo>∣</mo><mi>i</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>f</mi><mo>[</mo><mi mathvariant="normal">next</mi><mo>⁡</mo><mo>[</mo><mi>i</mi><mo>]</mo><mo>]</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mn>2</mn><mo>∤</mo><mi>i</mi></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">f[i] = \begin{cases} f[\operatorname{next}[i]] + 1 &amp; 2 \mid i\\ f[\operatorname{next}[i]] &amp; 2\nmid i \end{cases}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.0000299999999998em;vertical-align:-1.25003em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mop"><span class="mord mathrm">n</span><span class="mord mathrm">e</span><span class="mord mathrm">x</span><span class="mord mathrm">t</span></span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mop"><span class="mord mathrm">n</span><span class="mord mathrm">e</span><span class="mord mathrm">x</span><span class="mord mathrm">t</span></span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mclose">]</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em;"><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">2</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∣</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault">i</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord">2</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel amsrm">∤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mord mathdefault">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<pre><code class="language-cpp">//The Code Is From Dawn
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+inline int read() {
+	int x = 0;
+	char c = getchar();
+	bool f = 0;
+	while(!isdigit(c)) f |= (c == '-'), c = getchar();
+	while(isdigit(c)) x = (x * 10) + (c ^ 48), c = getchar();
+	return f ? -x : x;
+}
+const int maxn = 2 * 1e5 + 5;
+char s[maxn];
+int n, Next[maxn], f[maxn], Ans;
+inline void Get_Next() {
+	Next[0] = -1, Next[1] = 0;
+	for(register int i = 2; i &lt;= n; ++i) {
+		int j = Next[i - 1] + 1;
+		while(s[j] != s[i] &amp;&amp; j) j = Next[j - 1] + 1;
+		if(j) Next[i] = j;
+		else Next[i] = 0;
+	}
+}
+int main() {
+//	freopen(&quot;Prefix.in&quot;, &quot;r&quot;, stdin);
+//	freopen(&quot;Prefix.out&quot;, &quot;w&quot;, stdout);
+	scanf(&quot;%s&quot;, s + 1), n = strlen(s + 1);
+	Get_Next();
+	for(register int i = 1; i &lt;= n; ++i) {
+		if(i % 2 == 0) f[i] = 1;
+		if(Next[i] &gt; 0) f[i] += f[Next[i]];
+		Ans += f[i];
+	}
+	printf(&quot;%d\n&quot;, Ans);
+	return 0;
+}
+</code></pre>
+<h2 id="t3-motor">T3 Motor</h2>
+<p>很显然的分层图模型，这里采用二维 Dij</p>
+<pre><code class="language-cpp">//The Code Is From Dawn
+#include&lt;bits/stdc++.h&gt;
+#define Pi pair&lt; pair&lt;int, int&gt;, int &gt;
+using namespace std;
+inline int read() {
+	int x = 0;
+	char c = getchar();
+	bool f = 0;
+	while(!isdigit(c)) f |= (c == '-'), c = getchar();
+	while(isdigit(c)) x = (x * 10) + (c ^ 48), c = getchar();
+	return f ? -x : x;
+}
+const int maxm = 5 * 1e4 + 5, maxn = 1e4 + 5, INF = 1e9 + 7;
+int n, m, k, s, t;
+struct node {
+	int v, nex;
+	int w;
+}edge[maxm &lt;&lt; 1];
+int head[maxn], len;
+int Dist[maxn][15], Vst[maxn][15];
+inline void make_map(int u, int v, int w) {
+	len++;
+	edge[len].nex = head[u];
+	edge[len].v = v;
+	edge[len].w = w;
+	head[u] = len;
+}
+inline void Dijstra() {
+	memset(Vst, 0, sizeof(Vst));
+	for(register int i = 1; i &lt;= n; ++i)
+		for(register int j = 0; j &lt;= k; ++j) Dist[i][j] = INF;
+	priority_queue &lt; Pi &gt; Q;
+	Q.push(make_pair(make_pair(0, 0), s)), Dist[s][0] = 0;
+	while(!Q.empty()) {
+		int x = Q.top().second, fr = Q.top().first.second; Q.pop();
+		if(Vst[x][fr]) continue;
+		for(register int i = head[x]; i; i = edge[i].nex) {
+			int y = edge[i].v, z = edge[i].w;
+			if(Dist[y][fr] &gt; Dist[x][fr] + z) {
+				Dist[y][fr] = Dist[x][fr] + z;
+				Q.push(make_pair(make_pair(-Dist[y][fr], fr), y));
+			}
+			if(fr &lt; k &amp;&amp; Dist[y][fr + 1] &gt; Dist[x][fr]) {
+				Dist[y][fr + 1] = Dist[x][fr];
+				Q.push(make_pair(make_pair(-Dist[y][fr + 1], fr + 1), y));
+			}
+		}
+	}
+}
+int main() {
+//	freopen(&quot;Motor.in&quot;, &quot;r&quot;, stdin);
+//	freopen(&quot;Motor.out&quot;, &quot;w&quot;, stdout);
+	n = read(), m = read(), k = read(), s = read(), t = read();
+	for(register int i = 1; i &lt;= m; ++i) {
+		int u = read(), v = read(), w = read();
+		make_map(u, v, w), make_map(v, u, w);
+	}
+	Dijstra();
+	int Ans = INF;
+	for(register int i = 0; i &lt;= k; ++i) Ans = min(Ans, Dist[t][i]);
+	printf(&quot;%d\n&quot;, Ans);
+	return 0;
+}
+</code></pre>
+
+            </div>
+            <hr style="width: 80%;">
+            
+            <div class="postfooter">
+                <ul class="post-copyright">
+                    <li><strong>文章作者：</strong>Dawn</li>
+            <li><strong>原文链接：</strong>https://your-dawn.github.io/post/711-shu-qi-mo-ni-sai/</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用<i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA
+                许可协议。转载请注明出处！</li>
+            </ul>
+        </div>
+        
+            <div class="shareContainer">
+                <div class="share" style="height:30px;">
+                    <a class="qq" href=""><i><img class="shareicon"
+                                src="https://your-dawn.github.io/media/images/qqs.png" alt=""></i></a>
+                    <a class="wechat" href=""><i><img class="shareicon"
+                                src="https://your-dawn.github.io/media/images/wechats.png" alt=""></i></a>
+                    <a class="weibo" href=""><i><img class="shareicon"
+                                src="https://your-dawn.github.io/media/images/weibos.png" alt=""></i></a>
+                    <a class="qzone" href=""><i><img class="shareicon"
+                                src="https://your-dawn.github.io/media/images/qzones.png" alt=""></i></a>
+                    <a class="douban" href=""><i><img class="shareicon"
+                                src="https://your-dawn.github.io/media/images/doubans.png" alt=""></i></a>
+                    <a class="facebook" href=""><i><img class="shareicon"
+                                src="https://your-dawn.github.io/media/images/facebooks.png" alt=""></i></a>
+                    <a class="twitter" href=""><i><img class="shareicon"
+                                src="https://your-dawn.github.io/media/images/twitter.png" alt=""></i></a>
+                </div>
+            </div>
+            
+        <div id="otherpost">
+            
+            
+            <a data-pjax class="next-post-pc" href="https://your-dawn.github.io/post/710-shu-qi-mo-ni-sai/"  style="color: black;">
+                <div id="npcontainer">
+                    
+                    <img src="https://api.yimian.xyz/img?type=moe&amp;size=1920x1080" style="width: 100%;" class="opimg">
+                    
+                    <h4 class="optitle">7.10暑期模拟赛</h4>
+                </div>
+            </a>
+            <div class="next-post">
+                下一篇 <a  data-pjax href="https://your-dawn.github.io/post/710-shu-qi-mo-ni-sai/">7.10暑期模拟赛</a>
+            </div>
+            
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- 弹窗 -->
+    <div id="myModal" class="modal">
+        <img class="modal-content" id="img01">
+    </div>
+</body>
+<script>
+    //文章阅读热度
+    var pl = $("#pl").html();
+    var rootaddr = $("#rootaddr").html();
+    pl = pl.replace(rootaddr, "");
+    $("#hotnum").attr('id', pl);
+</script>
+                    <div class="toc-container">
+                        <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#t1-chain">T1 Chain</a></li>
+<li><a href="#t2-prefix">T2 Prefix</a></li>
+<li><a href="#t3-motor">T3 Motor</a></li>
+</ul>
+</li>
+</ul>
+
+                    </div>
+                    <div class="tog">
+                        <div class="toggleContainer">
+                            <div class="toggle">
+                                <i class="fas fa-angle-double-up"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------------------------- 评论系统👇 ------------------------->
+                    <div id="comment" class="comment">
+                        <div class="commentcontainer">
+                            
+                                
+                            
+                        </div>
+                    </div>
+                    <!---------------------------- 评论系统👆 ------------------------->
+                </div>
+                <!-- main标签，pjax渲染时加载以上内容👆 -->
+                <div class="col-md-1 col-lg-2"></div>
+                <div id="bg">
+                </div>
+            </div>
+            <!-- ----------------左侧菜单栏html 👆-------------------------------------->
+            
+        </div>
+        <!-- aplayer播放器加载👇 -->
+            
+            <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 </head>
 
@@ -1258,29 +1544,37 @@ menulist.eq(i).show();
         }
     }
 </script>
-                
-        </div>
-        <div id="bg">
-        </div>
-        <!------- 背景图加载方式👇----- -->
-        <div id="bgchoice" style="display: none">link
-            </div>
             
-            <div id="bgurl" style="display:none">https://cdn.luogu.com.cn/upload/image_hosting/vhm44q3u.png</div>
-               
-        <!------- 背景图加载方式👆----- -->
+        <!-- aplayer播放器加载👆 -->
     </div>
-
-        <div id="landlord">
-            <div class="message" style="opacity:0"></div>
-            <canvas id="live2d" width="240" height="250" class="live2d"></canvas>
-        </div>
-        <div id="domainname" style="display:none">https://your-dawn.github.io
-        </div>
+    <!-- 背景图加载方式👇 -->
+    <div id="bgchoice" style="display: none">link
+                </div>
+                
+                <div id="bgurl" style="display:none">https://cdn.luogu.com.cn/upload/image_hosting/vhm44q3u.png</div>
+                
+    <!-- 背景图加载方式👆 -->
 </body>
 
-</html>
-<!-------------------- live2d功能👇 --------------------------->
+<script>
+    //初始化
+    //更换twikoo头像
+    setTimeout(replaceAvatar,1000);
+    setTimeout(replaceAvatar,2000);
+    setTimeout(replaceAvatar,8000);
+    // --------为每张图片添加懒加载（lazyload）标签-->懒加载功能 👇------------
+    lazyload();
+    //为文章内所有代码块添加代码复制功能 👇
+    codeinit();
+    // ------代码高亮显示功能-------------
+    hljs.initHighlightingOnLoad();
+    if (shareChoice)
+        shareInit();
+    if (donateChoice)
+        donateInit();
+</script>
+
+<!------------------ 加载live2d模型功能（看板娘）👇 ---------------->
 
 <script type="text/javascript">
     var message_Path = '/live2d/'
@@ -1292,7 +1586,29 @@ menulist.eq(i).show();
     loadlive2d("live2d", "https://your-dawn.github.io/media/live2d/assets/tororo.model.json");
 </script>
 
-<!-------------------- live2d功能👆 --------------------------->
+<!------------------ 加载live2d模型功能（看板娘）👆 ---------------->
+
+
+<!----------------------- 返回顶部按钮功能👇 --------------------->
+<script>
+    $(function () {
+        $('.toggleContainer').click(function () {
+            $('html,body').animate({
+                scrollTop: '0px'
+            }, 800);
+        });
+        $(window).scroll(function () {
+            var st = $(window).scrollTop();
+            if (st > 30) {
+                $(".toggleContainer").fadeIn(400);
+            } else {
+                $(".toggleContainer").fadeOut(100);
+            }
+        });
+    });
+</script>
+<!----------------------- 返回顶部按钮功能👆 --------------------->
+
 
 <!------------ 加载全局背景图功能👇（开始时没有写好，这功能有点鸡肋/(ㄒoㄒ)/~~） -->
 <script>
@@ -1313,4 +1629,29 @@ menulist.eq(i).show();
 </script>
 <!------------ 加载全局背景图功能👆（开始时没有写好，这功能有点鸡肋/(ㄒoㄒ)/~~） -->
 
+
+
+
 <script src="https://your-dawn.github.io/media/js/index.js"></script>
+
+
+<script>
+    //加载后的事件同步（阅读量、移动端评论等
+    window.onload = function () {
+    //代码块高亮渲染
+    document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightBlock(block);
+    });
+        getHotnum();
+        var sharepc = $(".share").eq(0).html();
+        $(".share").eq(1).html(sharepc);   //插件只会寻找一个分享标签渲染，所以需要手动添加到移动端
+        aplayerbtnInit();
+        $(".hljs").css({
+            "padding": "20px"
+        })
+    }
+</script>
+
+<!-- <script src="https://your-dawn.github.io/media/js/av-min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3.13.0/dist/av-min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/leancloud-storage@4.6.1/dist/av-live-query-min.js"></script> -->
