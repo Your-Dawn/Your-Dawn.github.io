@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://your-dawn.github.io</id>
     <title>Dawn_home</title>
-    <updated>2022-07-12T16:41:34.835Z</updated>
+    <updated>2022-07-16T06:00:46.084Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://your-dawn.github.io"/>
     <link rel="self" href="https://your-dawn.github.io/atom.xml"/>
@@ -10,6 +10,325 @@
     <logo>https://your-dawn.github.io/images/avatar.png</logo>
     <icon>https://your-dawn.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, Dawn_home</rights>
+    <entry>
+        <title type="html"><![CDATA[7.13暑期模拟赛]]></title>
+        <id>https://your-dawn.github.io/post/713-shu-qi-mo-ni-sai/</id>
+        <link href="https://your-dawn.github.io/post/713-shu-qi-mo-ni-sai/">
+        </link>
+        <updated>2022-07-16T03:29:09.000Z</updated>
+        <content type="html"><![CDATA[<p>期望得分：</p>
+<table>
+<thead>
+<tr>
+<th>T1</th>
+<th>T2</th>
+<th>T3</th>
+<th>Sum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>50</td>
+<td>80</td>
+<td>230</td>
+</tr>
+</tbody>
+</table>
+<p>实际得分：</p>
+<table>
+<thead>
+<tr>
+<th>T1</th>
+<th>T2</th>
+<th>T3</th>
+<th>Sum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>95</td>
+<td>50</td>
+<td>0</td>
+<td>145</td>
+</tr>
+</tbody>
+</table>
+<h2 id="t1-tsm">T1 tsm</h2>
+<p>首先考虑没有修改的情况。</p>
+<p>最后的游戏，是一个典型的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Nim</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{Nim}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">N</span><span class="mord mathrm">i</span><span class="mord mathrm">m</span></span></span></span></span> 游戏，那么就只要考虑如何求出 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span></p>
+<p>图上路径最大边权最小问题，参考货车运输，考虑最小生成树 + <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">LCA</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{LCA}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">L</span><span class="mord mathrm">C</span><span class="mord mathrm">A</span></span></span></span></span></p>
+<p>稍微给个证明：考虑反证，如果答案不落在最小生成树上，那么可以将这条边替换进最小生成树中。</p>
+<p>再将修改考虑进去。</p>
+<p>实际上就是在树上多填了一条边，考虑找出环，若新增的边更小，删去最大的边，并重新初始化倍增数组。</p>
+<p>每部分的思路比较经典，是道缝合题，比较考验代码能力</p>
+<pre><code class="language-cpp">//The Code Is From Dawn
+#include&lt;bits/stdc++.h&gt;
+#define int long long
+using namespace std;
+inline int read() {
+	int x = 0;
+	char c = getchar();
+	bool f = 0;
+	while(!isdigit(c)) f |= (c == '-'), c = getchar();
+	while(isdigit(c)) x = (x * 10) + (c ^ 48), c = getchar();
+	return f ? -x : x;
+}
+const int maxn = 5000, maxm = 1e5 + 5;
+int n, m;
+struct Map {
+	struct node {
+		int u, v, nex;
+		int w, flag;
+	}edge[maxm &lt;&lt; 3];
+	map &lt; pair&lt;int, int&gt;, int &gt; mapp;
+	int head[maxm &lt;&lt; 3], len;
+	inline void make_map(int u, int v, int w, int flag) {
+		len++;
+		edge[len].nex = head[u];
+		edge[len].u = u;
+		edge[len].v = v;
+		edge[len].w = w;
+		edge[len].flag = flag;
+		head[u] = len;
+	}
+}Tree, Mapp;
+namespace MST {
+	int Father[maxm];
+	inline bool cmp(Map::node x, Map::node y) {
+		return x.w &lt; y.w;
+	}
+	inline int Find(int x) {
+		if(Father[x] != x) return Father[x] = Find(Father[x]);
+		return Father[x];
+	}
+	inline void Unnion(int x, int y) {
+		int f1 = Find(x), f2 = Find(y);
+		if(f1 != f2) Father[f2] = f1;
+	}
+	inline void Kruskal() {
+		int tot = 0;
+		for(register int i = 1; i &lt;= m; ++i) {
+			int u = Mapp.edge[i].u, v = Mapp.edge[i].v, w = Mapp.edge[i].w;
+			if(Find(u) != Find(v)) {
+				Unnion(u, v), tot++, Tree.make_map(u, v, w, 1), Tree.mapp[make_pair(u, v)] = Tree.len, Tree.make_map(v, u, w, 1), Tree.mapp[make_pair(v, u)] = Tree.len;
+				if(tot == n - 1) break;
+			}
+		}
+	}
+	inline void Work() {
+		for(register int i = 1; i &lt;= n; ++i) Father[i] = i;
+		sort(Mapp.edge + 1, Mapp.edge + m + 1, cmp);
+		Kruskal();
+	}
+}
+namespace LCA {
+	int f[maxm][25], maxx[maxm][25], dep[maxm];
+	int Lca, Maxx;
+	inline void Deal_First(int x, int fa) {
+		dep[x] = dep[fa] + 1;
+		for(register int i = 1; i &lt;= 20; ++i) {
+			f[x][i] = f[f[x][i - 1]][i - 1];
+			maxx[x][i] = max(maxx[x][i - 1], maxx[f[x][i - 1]][i - 1]);
+		}
+		for(register int i = Tree.head[x]; i; i = Tree.edge[i].nex) {
+			int y = Tree.edge[i].v, z = Tree.edge[i].w, flag = Tree.edge[i].flag;
+			if(y == fa || !flag) continue;
+			f[y][0] = x, maxx[y][0] = z;
+			Deal_First(y, x);
+		}
+	}
+	inline void Get_Lca(int x, int y) {
+		if(dep[x] &lt; dep[y]) swap(x, y);
+		Lca = Maxx = 0;
+		for(register int i = 20; i &gt;= 0; --i)
+			if(dep[f[x][i]] &gt;= dep[y]) Maxx = max(Maxx, maxx[x][i]), x = f[x][i];
+		if(x == y) { Lca = x; return ;}
+		for(register int i = 20; i &gt;= 0; --i)
+			if(f[x][i] != f[y][i]) Maxx = max(Maxx, max(maxx[x][i], maxx[y][i])), x = f[x][i], y = f[y][i];
+		Lca = f[x][0], Maxx = max(Maxx, max(maxx[x][0], maxx[y][0]));
+	}
+	inline int Erase(int x, int y, int z) {
+		Get_Lca(x, y);
+		if(Maxx &lt; z) return 0;
+		int now = 0; Maxx = 0;
+		while(x != Lca) {
+			if(maxx[x][0] &gt; Maxx) Maxx = maxx[x][0], now = x;
+			x = f[x][0];
+		}
+		while(y != Lca) {
+			if(maxx[y][0] &gt; Maxx) Maxx = maxx[y][0], now = y;
+			y = f[y][0];
+		}
+		return now;
+	}
+	inline void Work() {
+		Deal_First(1, 0);
+	}
+}
+namespace Solve {
+	using LCA::Maxx; using LCA::Get_Lca; using LCA::Deal_First; using LCA::Erase; using LCA::f;
+	inline bool Check(int x, int y) { return (x ^ y) != 0; }
+	inline void Work() {
+		int Q = read();
+		while(Q--) {
+			char s[15];
+			scanf(&quot;%s&quot;, s);
+			if(s[0] == 'a') {
+				int u = read(), v = read(), q = read(), x = Erase(u, v, q);
+				if(!x) continue;
+				int y = f[x][0];
+				Tree.edge[Tree.mapp[make_pair(x, y)]].flag = 0, Tree.edge[Tree.mapp[make_pair(y, x)]].flag = 0;
+				Tree.make_map(u, v, q, 1), Tree.mapp[make_pair(u, v)] = Tree.len, Tree.make_map(v, u, q, 1), Tree.mapp[make_pair(v, u)] = Tree.len;
+				Deal_First(1, 0);
+			}
+			else {
+				int m1 = read(), m2 = read(), b1 = read(), b2 = read();
+				Get_Lca(m1, m2); int M = Maxx;
+				Get_Lca(b1, b2); int B = Maxx;
+				if(Check(M, B)) printf(&quot;madoka\n&quot;);
+				else printf(&quot;Baozika\n&quot;);
+			}
+		}
+	}
+}
+signed main() {
+//	freopen(&quot;tsm.in&quot;, &quot;r&quot;, stdin);
+//	freopen(&quot;tsm.out&quot;, &quot;w&quot;, stdout);
+	n = read(), m = read();
+	for(register int i = 1; i &lt;= m; ++i) {
+		int u = read(), v = read(), w = read();
+		Mapp.make_map(u, v, w, 1);
+	}
+	MST::Work(), LCA::Work(), Solve::Work();
+	return 0;
+}
+</code></pre>
+<h2 id="t2-ihp">T2 ihp</h2>
+<p>经典结论</p>
+<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><munder><mo>∑</mo><mrow><mi>d</mi><mo>∣</mo><mi>n</mi></mrow></munder><mi>φ</mi><mo>(</mo><mi>d</mi><mo>)</mo><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\sum_{d\mid n}\varphi(d) = n
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.5660100000000003em;vertical-align:-1.516005em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.050005em;"><span style="top:-1.808995em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">d</span><span class="mrel mtight">∣</span><span class="mord mathdefault mtight">n</span></span></span></span><span style="top:-3.0500049999999996em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.516005em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">φ</span><span class="mopen">(</span><span class="mord mathdefault">d</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span></span></p>
+<p>所以此题的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>(</mo><mi>i</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">i</span><span class="mclose">)</span></span></span></span> 就是 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>φ</mi><mo>(</mo><mi>i</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\varphi(i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">φ</span><span class="mopen">(</span><span class="mord mathdefault">i</span><span class="mclose">)</span></span></span></span></p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">φ</span></span></span></span> 是个积性函数，所以可以直接线性筛 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">φ</span></span></span></span></p>
+<p>至于剩下两个提答点，直接跑分解。</p>
+<pre><code class="language-cpp">//The Code Is From Dawn
+#include&lt;bits/stdc++.h&gt;
+#define int long long
+using namespace std;
+inline int read() {
+	int x = 0;
+	char c = getchar();
+	bool f = 0;
+	while(!isdigit(c)) f |= (c == '-'), c = getchar();
+	while(isdigit(c)) x = (x * 10) + (c ^ 48), c = getchar();
+	return f ? -x : x;
+}
+const int maxn = 3e7 + 5;
+int n;
+int a[maxn], Phi[maxn], Vst[maxn], Prime[maxn], maxx, Ans, tot;
+inline void Get_Phi() {
+	Phi[1] = 1;
+	for(register int i = 2; i &lt;= maxx; ++i) {
+		if(!Vst[i]) Prime[++tot] = i, Phi[i] = i - 1;
+		for(register int j = 1; j &lt;= tot &amp;&amp; i * Prime[j] &lt;= maxx; ++j) {
+			Vst[i * Prime[j]] = 1;
+			if(i % Prime[j] == 0) { Phi[i * Prime[j]] = Phi[i] * Prime[j]; break; }
+			else Phi[i * Prime[j]] = Phi[i] * (Prime[j] - 1);
+		}
+	}
+} 
+signed main() {
+//	freopen(&quot;ihp.in&quot;, &quot;r&quot;, stdin);
+//	freopen(&quot;ihp.out&quot;, &quot;w&quot;, stdout);
+	n = read();
+	if(n == 5) { printf(&quot;21517525747423580&quot;); return 0; }
+	if(n == 3) { printf(&quot;525162079891401242&quot;); return 0; }
+	for(register int i = 1; i &lt;= n; ++i) a[i] = read(), maxx = max(maxx, a[i]);
+	Get_Phi();
+	for(register int i = 1; i &lt;= n; ++i) Ans += Phi[a[i]];
+	printf(&quot;%lld\n&quot;, Ans);
+	return 0;
+}
+</code></pre>
+<h2 id="t3-qmras">T3 qmras</h2>
+<h3 id="solve1sam">Solve1：SAM</h3>
+<p>最近学了下 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">SAM</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{SAM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">S</span><span class="mord mathrm">A</span><span class="mord mathrm">M</span></span></span></span></span> ，能解决大部分子串类字符串问题</p>
+<p>此题就是个 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">SAM</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{SAM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">S</span><span class="mord mathrm">A</span><span class="mord mathrm">M</span></span></span></span></span> 板子，建出 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">SAM</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{SAM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">S</span><span class="mord mathrm">A</span><span class="mord mathrm">M</span></span></span></span></span> 后求出每个点 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">endpos</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{endpos}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mop"><span class="mord mathrm">e</span><span class="mord mathrm">n</span><span class="mord mathrm">d</span><span class="mord mathrm">p</span><span class="mord mathrm">o</span><span class="mord mathrm">s</span></span></span></span></span> 的集合大小，乘上每个点长度小于 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span> 的本质不同子串数量</p>
+<p>后者的计算方式：<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>min</mi><mo>⁡</mo><mo>(</mo><mi>k</mi><mo separator="true">,</mo><mi mathvariant="normal">len</mi><mo>⁡</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo><mo>−</mo><mi mathvariant="normal">len</mi><mo>⁡</mo><mo>(</mo><mi mathvariant="normal">link</mi><mo>⁡</mo><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">\min(k, \operatorname{len}(x)) - \operatorname{len}(\operatorname{link}(x))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">min</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mord mathrm">l</span><span class="mord mathrm">e</span><span class="mord mathrm">n</span></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">l</span><span class="mord mathrm">e</span><span class="mord mathrm">n</span></span><span class="mopen">(</span><span class="mop"><span class="mord mathrm">l</span><span class="mord mathrm">i</span><span class="mord mathrm">n</span><span class="mord mathrm">k</span></span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></p>
+<pre><code class="language-cpp">//The Code Is From Dawn
+#include&lt;bits/stdc++.h&gt;
+#define int long long
+using namespace std;
+inline int read() {
+	int x = 0;
+	char c = getchar();
+	bool f = 0;
+	while(!isdigit(c)) f |= (c == '-'), c = getchar();
+	while(isdigit(c)) x = (x * 10) + (c ^ 48), c = getchar();
+	return f ? -x : x;
+}
+const int maxn = 1e6 + 5, mod = 998244353;
+int n, k;
+char s[maxn];
+struct Map {
+	int v, nex;
+}edge[maxn &lt;&lt; 1];
+struct node {
+	int link, len;
+	int Ch[26];
+}SAM[maxn];
+int head[maxn], len;
+int Siz[maxn], tot, Last, Answer;
+inline void make_map(int u, int v) {
+	len++;
+	edge[len].nex = head[u];
+	edge[len].v = v;
+	head[u] = len;
+}
+inline void Init() { SAM[1].len = 0, Last = 1, SAM[1].link = 0, tot++; }
+inline void Insert(int c) {
+	int q = ++tot, p = Last; SAM[q].len = SAM[p].len + 1, Last = q, Siz[q] = 1;
+	while(p &amp;&amp; !SAM[p].Ch[c]) SAM[p].Ch[c] = q, p = SAM[p].link;
+	if(!p) SAM[q].link = 1;
+	else {
+		int x = SAM[p].Ch[c];
+		if(SAM[p].len + 1 == SAM[x].len) SAM[q].link = x;
+		else {
+			int y = ++tot; SAM[y].len = SAM[p].len + 1;
+			SAM[y].link = SAM[x].link, SAM[q].link = SAM[x].link = y;
+			memcpy(SAM[y].Ch, SAM[x].Ch, sizeof(SAM[x].Ch));
+			while(p &amp;&amp; SAM[p].Ch[c] == x) SAM[p].Ch[c] = y, p = SAM[p].link;
+		}
+	}
+}
+inline void Search(int x) {
+	for(register int i = head[x]; i; i = edge[i].nex) {
+		int y = edge[i].v;
+		Search(y);
+		Siz[x] += Siz[y];
+	}
+	if(Siz[x] &gt; 1) Answer = (Answer + (Siz[x] * (Siz[x] - 1) / 2) % mod * max(0ll, min(k, SAM[x].len) - SAM[SAM[x].link].len) % mod % mod) % mod;
+}
+signed main() {
+//	freopen(&quot;qmras.in&quot;, &quot;r&quot;, stdin);
+//	freopen(&quot;qmras.out&quot;, &quot;w&quot;, stdout);
+	n = read(), k = read();
+	scanf(&quot;%s&quot;, s), Init();
+	for(register int i = 0; i &lt; n; ++i) Insert(s[i] - 'a');
+	for(register int i = 2; i &lt;= tot; ++i) make_map(SAM[i].link, i);
+	Search(1);
+	printf(&quot;%lld\n&quot;, Answer);
+	return 0;
+}
+</code></pre>
+<h3 id="solve2hash">Solve2：Hash</h3>
+<p>由于保证数据随机，考虑长度很长的相同串不可能出现，所以可以自己设置 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span> 的取值，然后直接前缀 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">hash</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{hash}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">h</span><span class="mord mathrm">a</span><span class="mord mathrm">s</span><span class="mord mathrm">h</span></span></span></span></span> 做 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">check</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{check}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">c</span><span class="mord mathrm">h</span><span class="mord mathrm">e</span><span class="mord mathrm">c</span><span class="mord mathrm">k</span></span></span></span></span> 即可。</p>
+<p>最后调调 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span> 就好了，大概20的样子就能过。</p>
+<h3 id="solve3sa-rmq">Solve3：Sa + RMQ</h3>
+<p>大概思路是利用 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">SA</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{SA}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">S</span><span class="mord mathrm">A</span></span></span></span></span> 的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">Height</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{Height}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mop"><span class="mord mathrm">H</span><span class="mord mathrm">e</span><span class="mord mathrm">i</span><span class="mord mathrm" style="margin-right:0.01389em;">g</span><span class="mord mathrm">h</span><span class="mord mathrm">t</span></span></span></span></span> 数组，再用 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">RMQ</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{RMQ}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mop"><span class="mord mathrm">R</span><span class="mord mathrm">M</span><span class="mord mathrm">Q</span></span></span></span></span> 维护一下区间最大（其实我也不是很清楚bushi）。</p>
+<p>还是推荐学习 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">SAM</mi><mo>⁡</mo></mrow><annotation encoding="application/x-tex">\operatorname{SAM}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mop"><span class="mord mathrm">S</span><span class="mord mathrm">A</span><span class="mord mathrm">M</span></span></span></span></span> ！！！</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[7.11暑期模拟赛]]></title>
         <id>https://your-dawn.github.io/post/711-shu-qi-mo-ni-sai/</id>
